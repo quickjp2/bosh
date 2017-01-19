@@ -73,11 +73,13 @@ module Bosh::Monitor
         # DataDog only supports "low" and "normal" priority
         begin
           priority = normal_priority?(alert.severity) ? "normal" : "low"
+          tags = ["source:#{source}"]
+          @addt_tags.each { |tag| tags << tag }
           dog_client.emit_event(
             Dogapi::Event.new(msg,
                               msg_title: title,
                               date_happened: timestamp,
-                              tags: ["source:#{source}"],
+                              tags: tags,
                               priority: priority
                              )
           )

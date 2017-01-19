@@ -14,6 +14,7 @@ module Bosh::Monitor
         @api_key = options["api_key"]
         @application_key = options["application_key"]
         @pagerduty_service_name = options["pagerduty_service_name"]
+        @addt_tags = options["tags"]
 
         logger.info("DataDog plugin is running...")
       end

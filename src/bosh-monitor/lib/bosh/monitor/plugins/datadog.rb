@@ -49,6 +49,8 @@ module Bosh::Monitor
           agent:#{heartbeat.agent_id}
         ]
 
+        @addt_tags.each { |tag| tags << tag }
+
         heartbeat.metrics.each do |metric|
           begin
             point = [Time.at(metric.timestamp), metric.value]

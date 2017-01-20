@@ -49,7 +49,10 @@ module Bosh::Monitor
           agent:#{heartbeat.agent_id}
         ]
 
-        @addt_tags.each { |tag| tags << tag }
+        if @addt_tags.instance_of? Array
+          @addt_tags.each { |tag| tags << tag }
+        elsif @addt_tags.instance_of? Hash
+          @addt_tags.each { |key,value| tags << "#{key}:#{value}" }
 
         heartbeat.metrics.each do |metric|
           begin
@@ -74,7 +77,10 @@ module Bosh::Monitor
         begin
           priority = normal_priority?(alert.severity) ? "normal" : "low"
           tags = ["source:#{source}"]
-          @addt_tags.each { |tag| tags << tag }
+          if @addt_tags.instance_of? Array
+            @addt_tags.each { |tag| tags << tag }
+          elsif @addt_tags.instance_of? Hash
+            @addt_tags.each { |key,value| tags << "#{key}:#{value}" }
           dog_client.emit_event(
             Dogapi::Event.new(msg,
                               msg_title: title,
